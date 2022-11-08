@@ -1,15 +1,18 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ImageminWebpackPlugin = require('imagemin-webpack-plugin').default;
+const ImageminMozjpeg = require('imagemin-mozjpeg');
 
 module.exports = {
   mode: 'production',
   entry: {
-    app: path.resolve(__dirname, 'src/index.js')
+    app: path.resolve(__dirname, 'src/index.js'),
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
+    clean: true,
   },
   module: {
     rules: [
@@ -39,5 +42,14 @@ module.exports = {
         },
       ],
     }),
+    new ImageminWebpackPlugin({
+      plugins: [
+        ImageminMozjpeg({
+          quality: 50,
+          progressive: true,
+        }),
+      ],
+    }),
   ],
 };
+
